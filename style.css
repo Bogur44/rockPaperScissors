@@ -1,0 +1,31 @@
+body{
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+button{
+    width: 100px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 16px;
+
+}
+
+#answers{
+    margin: 0px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#answers p{
+    margin: 0;
+    padding: 8px;
+}
