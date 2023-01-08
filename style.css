@@ -7,6 +7,8 @@ body{
     flex-direction: column;
     padding: 0;
     margin: 0;
+    background:linear-gradient(to right ,black, rgb(5, 161, 154), white, rgb(5, 161, 154), black);
+    
 }
 
 button{
@@ -14,7 +16,52 @@ button{
     height: 50px;
     font-size: 16px;
     border-radius: 16px;
+    transition: transform .3s ease-in-out;
+    border: solid 2px black;
 
+}
+
+.winning{
+    float: none;
+    height: 50px;
+    width: 100px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 4px rgb(5, 161, 154);
+    border-radius: 16px;
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+//.losing{
+    float: none;
+    height: 100px;
+    width: 100px;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 2px orange;
+    border-radius: 16px;
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+}
+    
+
+
+button:hover{
+    transform: scale(1.05);
+    border-color: orange;
+    background-color: rgb(115, 182, 174);
+}
+
+button:active{
+    border-color: rgb(31, 174, 240);
+    transform: scale(1);
 }
 
 #answers{

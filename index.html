@@ -10,20 +10,158 @@
 </head>
 
 <body>
-<script src="javascript.js"></script>
+
     
 <div id="choices">
     <h1>Rock, Paper, Scissors</h1>
-    <button class="rock">Rock</button>
-    <button class="paper">Paper</button>
-    <button class="scissors">Scissors</button>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
 
 </div>
 
 <div id="answers">
-    <p>You:</p>
-    <p>Computer:</p>
+    <p id="playerScore">You: 0</p>
+    <p id="loses">Computer: 0</p>
+    <p id="rounds">Rounds: 0</p>
+    <p id="drawColumn"></p>
 </div>
+
+<div class="winlos">
+    <p class="winning"></p>
+    <p class="losing"></p>
+</div>
+<script>
+
+    //generating random computer outcome
+const outcomes = [
+        'paper',
+        'scissors',
+        'rock',
+        ]
+function getComputerChoice(){
+    let results = outcomes[Math.floor(Math.random() * 3)];
+    return results;
+}  
+    //all consts and vars
+let wins = 0;
+let loses = 0;
+let rounds = 0;
+let draw = "";
+
+let computerSelection = getComputerChoice();
+let playerSelection = '';
+//const div = document.querySelector('#answers')
+
+const winsContent = document.querySelector("#playerScore")
+const losesContent = document.querySelector("#loses")
+const roundsContent = document.querySelector("#rounds")
+const drawContent = document.querySelector("#drawColumn")
+const winText = document.querySelector(".winning")
+
+const rockButton = document.querySelector('#rock');
+rockButton.addEventListener('click', function(e){
+    game('rock', getComputerChoice())
+});
+
+const paperButton = document.querySelector('#paper');
+paperButton.addEventListener('click', function(e){
+    game('paper', getComputerChoice())
+});
+
+const scissorsButton = document.querySelector('#scissors');
+scissorsButton.addEventListener('click', function(e){
+    game('rock', getComputerChoice())
+});
+
+
+    //says the outcome of one round
+function playRound(playerSelection, computerSelection){
+    
+    if (computerSelection === "rock" && playerSelection === "rock"){
+        let result = "Its a draw, you both picked " + playerSelection
+        return result;
+    }   
+    else if(computerSelection === "paper" && playerSelection === "rock"){
+        let result = "You lose, " + computerSelection + " beats " + playerSelection
+        return result;
+    }   
+    else if(computerSelection === "scissors" && playerSelection === "rock"){
+        let result = "You win, " + playerSelection + " beats " + computerSelection
+        return result; 0
+    }
+    else if(computerSelection === "paper" && playerSelection === "paper"){
+        let result = "Its a draw, you both picked " + playerSelection
+        return result;
+    }
+    else if(computerSelection === "scissors" && playerSelection === "paper"){
+        let result = "You lose, " + computerSelection + " beats " + playerSelection
+        return result;
+    }
+    else if(computerSelection === "scissors" && playerSelection === "scissors"){
+        let result = "Its a draw, you both picked " + playerSelection
+        return result;
+    }
+    else if(computerSelection === "rock" && playerSelection === "scissors"){
+        let result = "You lose, " + computerSelection + " beats " + playerSelection
+        return result;
+    }
+    else if(computerSelection === "rock" && playerSelection === "paper"){
+        let result = "You win, " + playerSelection + " beats " + computerSelection
+        return result;
+    }
+    else if(computerSelection === "paper" && playerSelection === "scissors"){
+        let result = "You win, " + playerSelection + " beats " + computerSelection
+        return result;
+    }
+    
+}
+
+function game(playerSelection, computerSelection){
+        let score = playRound(playerSelection, getComputerChoice());
+        if (score.includes("lose")){
+            drawContent.textContent = 'You lose, ' + computerSelection + " beats " + playerSelection;
+            wins++;
+            
+        }
+        else if(score.includes("win")){
+            drawContent.textContent = 'You win, ' + playerSelection + " beats " + computerSelection;
+            loses++;
+        }
+        else if(score.includes("draw")){
+            drawContent.textContent = "Its a draw, you both picked " + playerSelection
+        }
+        rounds++
+        winsContent.textContent = "You: " + wins;
+        losesContent.textContent = "Computer: " + loses;
+        roundsContent.textContent = "Rounds: " + rounds
+        
+        console.log(playerSelection);
+        console.log(computerSelection);
+        console.log(playRound(playerSelection, computerSelection))
+        
+        if(wins === 5 || loses === 5){
+            gameEnd(wins, loses);
+            rounds = loses = wins = 0
+        }
+}
+
+function gameEnd(wins, loses){
+    if(wins > loses){
+        winText.textContent = "YOU WIN";
+    }
+    else if(wins < loses){
+        winText.textContent = "YOU LOSE";
+    }
+    else{
+        winText.textContent = "wtf did you do?";
+    }
+}
+
+
+
+
+</script>
 </body>
 
 </html>
