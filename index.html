@@ -11,28 +11,79 @@
 
 <body>
 
-    
-<div id="choices">
-    <h1>Rock, Paper, Scissors</h1>
-    <button id="rock">Rock</button>
-    <button id="paper">Paper</button>
-    <button id="scissors">Scissors</button>
+<div id="container"> 
+<h1>Rock, Paper, Scissors</h1>
 
+    <div id="choices">
+        <button id="rock">ROCK</button>
+        <button id="paper">PAPER</button>
+        <button id="scissors">SCISSORS</button>
+    </div>
+
+<div id="playerPicks">
+    <div id="playerPick" class="normal">You</div>
+    <div id="compPick" class="normal">Computer</div>
 </div>
 
 <div id="answers">
     <p id="playerScore">You: 0</p>
     <p id="loses">Computer: 0</p>
     <p id="rounds">Rounds: 0</p>
-    <p id="drawColumn"></p>
+</div>
+<p id="drawColumn"></p>
+
+
+    
 </div>
 
-<div class="winlos">
-    <p class="winning"></p>
-    <p class="losing"></p>
 </div>
 <script>
 
+var playerPick = document.getElementById('playerPick');
+function pickedRock(){
+    var playerPick = document.getElementById('playerPick');
+    playerPick.classList.remove('paperPick','scissorsPick');
+    playerPick.classList.add('rockPick');
+}
+function pickedPaper(){
+    var playerPick = document.getElementById('playerPick');
+    playerPick.classList.remove('scissorsPick');
+    playerPick.classList.add('paperPick');
+}
+function pickedScissors(){
+    var playerPick = document.getElementById('playerPick');
+    playerPick.classList.remove('paperPick', 'rockPick');
+    playerPick.classList.add('scissorsPick');
+}
+
+
+function pickedPcRock(){
+    var playerPick = document.getElementById('compPick');
+    compPick.classList.remove('paperPick','scissorsPick');
+    compPick.classList.add('rockPick');
+}
+function pickedPcPaper(){
+    var compPick = document.getElementById('compPick');
+    compPick.classList.remove('scissorsPick','rockPick');
+    compPick.classList.add('paperPick');
+}
+function pickedPcScissors(){
+    var compPick = document.getElementById('compPick');
+    compPick.classList.remove('paperPick', 'rockPick');
+    compPick.classList.add('scissorsPick');
+}
+
+function compChoice(){
+    if(computerSelection === 'rock'){
+            pickedPcRock()
+        }
+    else if(computerSelection === 'paper'){
+            pickedPcPaper()
+        }
+    else if(computerSelection === 'scissors'){
+            pickedPcScissors()
+        }
+}
     //generating random computer outcome
 const outcomes = [
         'paper',
@@ -42,16 +93,17 @@ const outcomes = [
 function getComputerChoice(){
     let results = outcomes[Math.floor(Math.random() * 3)];
     return results;
-}  
+    }
+
     //all consts and vars
 let wins = 0;
 let loses = 0;
 let rounds = 0;
 let draw = "";
 
-let computerSelection = getComputerChoice();
 let playerSelection = '';
 //const div = document.querySelector('#answers')
+
 
 const winsContent = document.querySelector("#playerScore")
 const losesContent = document.querySelector("#loses")
@@ -59,25 +111,30 @@ const roundsContent = document.querySelector("#rounds")
 const drawContent = document.querySelector("#drawColumn")
 const winText = document.querySelector(".winning")
 
+let computerSelection = getComputerChoice();
+
 const rockButton = document.querySelector('#rock');
 rockButton.addEventListener('click', function(e){
-    game('rock', getComputerChoice())
+    game('rock', getComputerChoice());
+    pickedRock();
 });
 
 const paperButton = document.querySelector('#paper');
 paperButton.addEventListener('click', function(e){
-    game('paper', getComputerChoice())
+    game('paper', getComputerChoice());
+    pickedPaper();  
 });
 
 const scissorsButton = document.querySelector('#scissors');
 scissorsButton.addEventListener('click', function(e){
-    game('rock', getComputerChoice())
+    game('scissors', getComputerChoice());
+    pickedScissors();
 });
 
 
     //says the outcome of one round
 function playRound(playerSelection, computerSelection){
-    
+    compChoice()
     if (computerSelection === "rock" && playerSelection === "rock"){
         let result = "Its a draw, you both picked " + playerSelection
         return result;
@@ -88,7 +145,7 @@ function playRound(playerSelection, computerSelection){
     }   
     else if(computerSelection === "scissors" && playerSelection === "rock"){
         let result = "You win, " + playerSelection + " beats " + computerSelection
-        return result; 0
+        return result; 
     }
     else if(computerSelection === "paper" && playerSelection === "paper"){
         let result = "Its a draw, you both picked " + playerSelection
@@ -117,16 +174,17 @@ function playRound(playerSelection, computerSelection){
     
 }
 
+
 function game(playerSelection, computerSelection){
-        let score = playRound(playerSelection, getComputerChoice());
+        let score = playRound(playerSelection, computerSelection)
         if (score.includes("lose")){
             drawContent.textContent = 'You lose, ' + computerSelection + " beats " + playerSelection;
-            wins++;
+            loses++;
             
         }
         else if(score.includes("win")){
             drawContent.textContent = 'You win, ' + playerSelection + " beats " + computerSelection;
-            loses++;
+            wins++;
         }
         else if(score.includes("draw")){
             drawContent.textContent = "Its a draw, you both picked " + playerSelection
@@ -134,32 +192,38 @@ function game(playerSelection, computerSelection){
         rounds++
         winsContent.textContent = "You: " + wins;
         losesContent.textContent = "Computer: " + loses;
-        roundsContent.textContent = "Rounds: " + rounds
-        
+        roundsContent.textContent = "Rounds: " + rounds;
         console.log(playerSelection);
         console.log(computerSelection);
         console.log(playRound(playerSelection, computerSelection))
-        
         if(wins === 5 || loses === 5){
             gameEnd(wins, loses);
             rounds = loses = wins = 0
         }
 }
 
+
+const p = document.createElement('p');
+p.classList.add('p');
+
 function gameEnd(wins, loses){
     if(wins > loses){
+        const p = document.createElement('p');
+    p.classList.add('p');
+        p.style.add = '.winning';
         winText.textContent = "YOU WIN";
     }
     else if(wins < loses){
+        const p = document.createElement('p');
+    p.classList.add('p');
+        p.style.add = '.losing';
         winText.textContent = "YOU LOSE";
+
     }
     else{
         winText.textContent = "wtf did you do?";
     }
 }
-
-
-
 
 </script>
 </body>
