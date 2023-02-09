@@ -1,7 +1,7 @@
 body{
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(to right,rgb(0, 32, 80), rgb(4, 60, 143)  );
+    background: linear-gradient(to right,rgb(0, 32, 80), rgb(4, 72, 173)  );
 
     display: flex;
     flex-direction: column;
@@ -10,6 +10,13 @@ body{
 
 }
 
+.names{
+    display: flex;
+    font-size: 32px;
+    margin: 0;
+    padding: 0;
+    gap: 130px;
+}
 #container{
     height: 600px;
     width: 400px;
@@ -37,7 +44,7 @@ body{
 }
 
 #choices button{
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     width: 110px;
     height: 60px;
     border: solid 2px black;
@@ -66,7 +73,6 @@ body{
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-top: 15%;
 }
 
 .normal{
@@ -172,7 +178,7 @@ body{
     width: 300px;
     height: 25px;
     font-size: 20px;
-    margin-top: 55px;
+    margin-top: 35px;
     color: black;
     background-color: #fff;
     border: solid 2px black;
