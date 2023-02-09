@@ -22,18 +22,15 @@
 
 <div id="playerPicks">
     <div id="playerPick" class="normal">You</div>
+    <div id="roundResult"></div>
     <div id="compPick" class="normal">Computer</div>
 </div>
-
+<p id="drawColumn"></p>
 <div id="answers">
     <p id="playerScore">You: 0</p>
     <p id="loses">Computer: 0</p>
     <p id="rounds">Rounds: 0</p>
 </div>
-<p id="drawColumn"></p>
-
-
-    
 </div>
 
 </div>
@@ -41,48 +38,30 @@
 
 var playerPick = document.getElementById('playerPick');
 function pickedRock(){
-    var playerPick = document.getElementById('playerPick');
     playerPick.classList.remove('paperPick','scissorsPick');
     playerPick.classList.add('rockPick');
 }
 function pickedPaper(){
-    var playerPick = document.getElementById('playerPick');
-    playerPick.classList.remove('scissorsPick');
+    playerPick.classList.remove('scissorsPick','rockPick');
     playerPick.classList.add('paperPick');
 }
 function pickedScissors(){
-    var playerPick = document.getElementById('playerPick');
     playerPick.classList.remove('paperPick', 'rockPick');
     playerPick.classList.add('scissorsPick');
 }
 
-
+var compPick = document.getElementById('compPick');
 function pickedPcRock(){
-    var playerPick = document.getElementById('compPick');
     compPick.classList.remove('paperPick','scissorsPick');
     compPick.classList.add('rockPick');
 }
 function pickedPcPaper(){
-    var compPick = document.getElementById('compPick');
     compPick.classList.remove('scissorsPick','rockPick');
     compPick.classList.add('paperPick');
 }
 function pickedPcScissors(){
-    var compPick = document.getElementById('compPick');
     compPick.classList.remove('paperPick', 'rockPick');
     compPick.classList.add('scissorsPick');
-}
-
-function compChoice(){
-    if(computerSelection === 'rock'){
-            pickedPcRock()
-        }
-    else if(computerSelection === 'paper'){
-            pickedPcPaper()
-        }
-    else if(computerSelection === 'scissors'){
-            pickedPcScissors()
-        }
 }
     //generating random computer outcome
 const outcomes = [
@@ -100,16 +79,55 @@ let wins = 0;
 let loses = 0;
 let rounds = 0;
 let draw = "";
-
+let gameIsRunning = true;
 let playerSelection = '';
 //const div = document.querySelector('#answers')
 
+const win = 'You Win';
+const lose = 'You Lose';
 
 const winsContent = document.querySelector("#playerScore")
 const losesContent = document.querySelector("#loses")
 const roundsContent = document.querySelector("#rounds")
 const drawContent = document.querySelector("#drawColumn")
 const winText = document.querySelector(".winning")
+const bod = document.querySelector('body')
+const roundResult = document.querySelector('#roundResult')
+
+const div = document.createElement('div')
+div.classList.add('popup')
+
+const para = document.createElement('para')
+
+const button = document.createElement('button')
+button.classList.add('resetButton')
+
+button.addEventListener('click', () => {
+    gameIsRunning = true;
+    wins = 0;
+    loses = 0;
+    rounds = 0;
+    winsContent.textContent = "You: " + wins;
+    losesContent.textContent = "Computer: " + loses;
+    roundsContent.textContent = "Rounds: " + rounds;
+    playerPick.classList.remove('scissorsPick','rockPick','paperPick');
+    playerPick.classList.add('normal');
+    compPick.classList.remove('scissorsPick','rockPick','paperPick');
+    compPick.classList.add('normal');
+    drawContent.textContent = '';
+    roundResult.style.cssText = ('background-color: white')
+    div.classList.add('popup')
+});
+
+const paraReset = document.createElement('p')
+paraReset.textContent = 'RESET';
+paraReset.classList.add('reset')
+
+
+bod.appendChild(div)
+div.appendChild(para)
+div.appendChild(button)
+button.appendChild(paraReset)
 
 let computerSelection = getComputerChoice();
 
@@ -117,58 +135,69 @@ const rockButton = document.querySelector('#rock');
 rockButton.addEventListener('click', function(e){
     game('rock', getComputerChoice());
     pickedRock();
+
 });
 
 const paperButton = document.querySelector('#paper');
 paperButton.addEventListener('click', function(e){
     game('paper', getComputerChoice());
     pickedPaper();  
+    
 });
 
 const scissorsButton = document.querySelector('#scissors');
 scissorsButton.addEventListener('click', function(e){
     game('scissors', getComputerChoice());
     pickedScissors();
+    
 });
 
 
     //says the outcome of one round
 function playRound(playerSelection, computerSelection){
-    compChoice()
     if (computerSelection === "rock" && playerSelection === "rock"){
         let result = "Its a draw, you both picked " + playerSelection
+        pickedPcRock()
         return result;
     }   
     else if(computerSelection === "paper" && playerSelection === "rock"){
         let result = "You lose, " + computerSelection + " beats " + playerSelection
+        PickedPcPaper()
         return result;
     }   
     else if(computerSelection === "scissors" && playerSelection === "rock"){
         let result = "You win, " + playerSelection + " beats " + computerSelection
+        pickedPcScissors()
         return result; 
     }
     else if(computerSelection === "paper" && playerSelection === "paper"){
         let result = "Its a draw, you both picked " + playerSelection
+        pickedPcPaper()
         return result;
     }
     else if(computerSelection === "scissors" && playerSelection === "paper"){
         let result = "You lose, " + computerSelection + " beats " + playerSelection
+        pickedPcScissors()
         return result;
     }
     else if(computerSelection === "scissors" && playerSelection === "scissors"){
         let result = "Its a draw, you both picked " + playerSelection
+        pickedPcScissors()
         return result;
     }
     else if(computerSelection === "rock" && playerSelection === "scissors"){
         let result = "You lose, " + computerSelection + " beats " + playerSelection
+        pickedPcRock()
         return result;
     }
     else if(computerSelection === "rock" && playerSelection === "paper"){
         let result = "You win, " + playerSelection + " beats " + computerSelection
+        pickedPcRock()
         return result;
     }
     else if(computerSelection === "paper" && playerSelection === "scissors"){
         let result = "You win, " + playerSelection + " beats " + computerSelection
+        pickedPcPaper()
         return result;
     }
     
@@ -176,17 +205,20 @@ function playRound(playerSelection, computerSelection){
 
 
 function game(playerSelection, computerSelection){
+    if(gameIsRunning === true){
         let score = playRound(playerSelection, computerSelection)
         if (score.includes("lose")){
+            roundResult.style.cssText = ('background-color: rgb(109, 3, 3)')
             drawContent.textContent = 'You lose, ' + computerSelection + " beats " + playerSelection;
             loses++;
-            
         }
         else if(score.includes("win")){
+            roundResult.style.cssText = ('background-color: rgb(8, 105, 8)')
             drawContent.textContent = 'You win, ' + playerSelection + " beats " + computerSelection;
             wins++;
         }
         else if(score.includes("draw")){
+            roundResult.style.cssText = ('background-color: orange')
             drawContent.textContent = "Its a draw, you both picked " + playerSelection
         }
         rounds++
@@ -196,33 +228,30 @@ function game(playerSelection, computerSelection){
         console.log(playerSelection);
         console.log(computerSelection);
         console.log(playRound(playerSelection, computerSelection))
+
         if(wins === 5 || loses === 5){
             gameEnd(wins, loses);
-            rounds = loses = wins = 0
         }
+    }
 }
-
-
-const p = document.createElement('p');
-p.classList.add('p');
 
 function gameEnd(wins, loses){
     if(wins > loses){
-        const p = document.createElement('p');
-    p.classList.add('p');
-        p.style.add = '.winning';
-        winText.textContent = "YOU WIN";
+        div.classList.remove('popup')
+        div.classList.remove('lose')
+        div.classList.add('win')
+        para.textContent = 'YOU WIN'
     }
     else if(wins < loses){
-        const p = document.createElement('p');
-    p.classList.add('p');
-        p.style.add = '.losing';
-        winText.textContent = "YOU LOSE";
-
+        div.classList.remove('popup')
+        div.classList.remove('win')
+        div.classList.add('lose')
+        para.textContent = 'YOU LOSE'; 
     }
     else{
-        winText.textContent = "wtf did you do?";
+        div.classList.add = "invisible";
     }
+    gameIsRunning = false;
 }
 
 </script>
